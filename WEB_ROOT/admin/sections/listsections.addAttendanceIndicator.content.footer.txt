@@ -1,0 +1,23 @@
+~[if#elementary.~(f.in;value=~(curschoolid);in=102,104,105,107,108,109,110,111,120,131,140,150,211,260,261,262,263,264,272,282,310,437)=1]
+<script>
+  jQuery(document).ready(function () {
+    var myTimeOut;
+    var tableID = 'teacherSectionTable'; //element ID of table to sort
+    function waitAngularFinish() {
+      //wait until #loading dialog is in DOM and has been set to hidden
+      if (jQuery('#loading').length > 0 && jQuery('#loading:visible').length === 0) {
+        clearTimeout(myTimeOut);
+        jQuery('#' + tableID + ' tbody tr ').not(':last').each(function () {
+          let classRow = jQuery(this).find('td:eq(3)').text().trim();
+          if (!classRow.includes("Homeroom")) {
+            jQuery(this).find('td[name^="el_attendance"]').replaceWith(`<td name="el_attendance0"></td>`);
+          }
+        });
+      } else {
+        myTimeOut = setTimeout(waitAngularFinish, 100);
+      }
+    }
+    myTimeOut = setTimeout(waitAngularFinish, 100);
+  });
+</script>
+[/if#elementary]
