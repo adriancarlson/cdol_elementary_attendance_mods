@@ -12,7 +12,7 @@
           jQuery('#tableContent tr').each(function () {
             jQuery(this).find('td[name^="el_attendance"]').prepend(`<img id="noAtt" src="/images/attendancetaken_no.png" alt="No Attendance Taken">`);
           });
-          jQuery.getJSON('/admin/cdol/atttaken/data/getAttendanceTaken.json', { "crsnumb": courseNumb, "teacher": "" }, function (data) {
+          jQuery.getJSON('/admin/cdol/atttaken/data/getAttendanceTaken.json', { "crsnumb": courseNumb, "secNumb": "", "teacher": "" }, function (data) {
             var attTakenData = data;
             attTakenData.pop();
             attTakenData.forEach(function (curRecord) {

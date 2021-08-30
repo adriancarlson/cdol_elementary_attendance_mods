@@ -16,6 +16,7 @@
         WHERE	
             sec.termid LIKE '~(curyearid)__' 	AND sec.schoolid = ~(curschoolid)
         AND sec.course_number = '~(gpv.crsnumb)' 
+        ~[if#sec.~(gpv.secNumb)#] AND sec.section_number = '~(gpv.secNumb)'[/if#sec]
         ~[if#tch.~(gpv.teacher)#] AND sec.teacher = '~(gpv.teacher)'[/if#tch]
     ;]
         {

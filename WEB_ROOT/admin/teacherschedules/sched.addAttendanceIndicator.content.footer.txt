@@ -1,32 +1,32 @@
 ~[if#elementary.~(f.in;value=~(curschoolid);in=102,104,105,107,108,109,110,111,120,131,140,150,211,260,261,262,263,264,272,282,310,437)=1]
+<div id="tNumb" style="display:none">~(teachernumber)</div>
 <script>
   jQuery(document).ready(function () {
     var myTimeOut;
-    var tableID = 'tableContent'; //element ID of table to sort
+    var tableID = 'teacherSectionTable'; //element ID of table to sort
     function waitAngularFinish() {
       //wait until #loading dialog is in DOM and has been set to hidden
       if (jQuery('#loading').length > 0 && jQuery('#loading:visible').length === 0) {
         clearTimeout(myTimeOut);
-        let courseNumb = jQuery('#tableContent').find('td[coursenumber]').attr("coursenumber");
-        if (courseNumb.includes("541")) {
-          jQuery('#tableContent tr').each(function () {
+        
+        
+        let tNumber = jQuery('#tNumb').html();
+        
+        jQuery('#' + tableID + ' tbody tr ').not(':last').each(function () {
+          let courseNumb = jQuery(this).find('td:eq(2)').text().trim();
+          let secNumb = jQuery(this).find('td:eq(4)').text().trim();
+         
+          
+          if (courseNumb.includes("541")) {
+              
             jQuery(this).find('td[name^="el_attendance"]').prepend(`<img id="noAtt" src="/images/attendancetaken_no.png" alt="No Attendance Taken">`);
-          });
-          jQuery.getJSON('/admin/cdol/atttaken/data/getAttendanceTaken.json', { "crsnumb": courseNumb, "teacher": "" }, function (data) {
-            var attTakenData = data;
-            attTakenData.pop();
-            attTakenData.forEach(function (curRecord) {
-              if (curRecord.attTaken == 1) {
-                let targetSec = curRecord.secNumb;
-                console.log(targetSec);
-                let targetRow = jQuery('#tableContent').find(`td[sectionnum="${targetSec}"]`).closest('tr');
-                let attTd = targetRow.find('td[name^="el_attendance"]');
-                attTd.find('#noAtt').remove();
-                attTd.prepend(`<img id="attTaken" src="/images/attendancetaken_yes.png" alt="Attendance Taken">`);
-              }
-            })
-          });
-        }
+           
+            
+              
+          }
+        });
+        
+        
       } else {
         myTimeOut = setTimeout(waitAngularFinish, 100);
       }
