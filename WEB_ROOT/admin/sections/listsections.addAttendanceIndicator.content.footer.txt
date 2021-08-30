@@ -2,17 +2,29 @@
 <script>
   jQuery(document).ready(function () {
     var myTimeOut;
-    var tableID = 'teacherSectionTable'; //element ID of table to sort
+    var tableID = 'tableContent'; //element ID of table to sort
     function waitAngularFinish() {
       //wait until #loading dialog is in DOM and has been set to hidden
       if (jQuery('#loading').length > 0 && jQuery('#loading:visible').length === 0) {
         clearTimeout(myTimeOut);
-        jQuery('#' + tableID + ' tbody tr ').not(':last').each(function () {
-          let classRow = jQuery(this).find('td:eq(3)').text().trim();
-          if (!classRow.includes("Homeroom")) {
-            jQuery(this).find('td[name^="el_attendance"]').replaceWith(`<td name="el_attendance0"></td>`);
-          }
-        });
+        let courseNumb = jQuery('#tableContent').find('td[coursenumber]').attr("coursenumber");
+
+        if (courseNumb.includes("541")) {
+          jQuery.getJSON('/admin/cdol/atttaken/data/getAttendanceTaken.json', { "crsnumb": courseNumb, "teacher": "" }, function (data) {
+            var attTakenData = data;
+            console.log(attTakenData);
+          });
+
+          //for each data response find coresponding td value of section tr. append the att taken value  
+
+          jQuery('#tableContent tr').each(function () {
+            let curSecNumb = jQuery(this).find('[sectionNum]').attr("sectionNum");
+            jQuery(this).find('td[name^="el_attendance"]').prepend(`<img src="/images/attendancetaken_no.png" alt="Take Attendance">`);
+          });
+
+        }
+
+
       } else {
         myTimeOut = setTimeout(waitAngularFinish, 100);
       }

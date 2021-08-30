@@ -1,0 +1,26 @@
+
+[
+    ~[tlist_sql;
+        SELECT
+            sec.section_number,
+            CASE
+                WHEN att_t.att_date is not null THEN 1
+                ELSE 0
+            END attendance_taken
+        FROM SECTIONS sec
+        LEFT OUTER JOIN attendance_taken att_t 
+            ON (
+                sec.id = att_t.sectionid	
+                AND to_char(att_t.att_date,'MM/DD/YYYY') = to_char(SYSDATE,'MM/DD/YYYY')
+                ) 
+        WHERE	
+            sec.termid LIKE '~(curyearid)__' 	AND sec.schoolid = ~(curschoolid)
+        AND sec.course_number = '~(gpv.crsnumb)' 
+        ~[if#tch.~(gpv.teacher)#] AND sec.teacher = '~(gpv.teacher)'[/if#tch]
+    ;]
+        {
+            "secNumb" : "~(secNumb)",
+            "attTaken": "~(attTaken)"
+        },
+    [/tlist_sql]
+{}]
