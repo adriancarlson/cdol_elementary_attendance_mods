@@ -12,6 +12,7 @@
             ON (
                 sec.id = att_t.sectionid	
                 AND to_char(att_t.att_date,'MM/DD/YYYY') = to_char(SYSDATE,'MM/DD/YYYY')
+                AND to_char(att_t.att_taken_dt,'MM/DD/YYYY') = to_char(SYSDATE,'MM/DD/YYYY')
                 ) 
         WHERE	
             sec.termid LIKE '~(curyearid)__' 	AND sec.schoolid = ~(curschoolid)
