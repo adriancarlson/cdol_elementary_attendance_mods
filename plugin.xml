@@ -4,7 +4,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   description="CDOL Elementary Admin Attendance Modifications"
   name="CDOL Elemenatry Attendance Mods"
-  version="21.9.0.1"
+  version="22.2.0.0"
   xsi:schemaLocation="http://plugin.powerschool.pearson.com plugin.xsd">
 <publisher name="Adrian Carlson">
   <contact email="adrian-carlson@cdolinc.net"/>

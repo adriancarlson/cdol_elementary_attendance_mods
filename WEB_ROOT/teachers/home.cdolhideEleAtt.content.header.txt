@@ -1,0 +1,18 @@
+~[if#elementary.~(f.in;value=~(curschoolid);in=102,104,105,107,108,109,110,111,120,131,140,150,211,260,261,262,263,264,272,282,310,437)=1]
+  <script>
+
+    $j(document).ready(function() {
+      $j('#teacherSectionTable tbody tr').each(function() {
+            let classRow = $j(this).find('td:eq(1) span').html();
+
+                if(!classRow.includes("Homeroom")){
+                    let notHomeroomRow  = $j(this);
+                    notHomeroomRow.find('td[id^="attLink"]').replaceWith(`<td style="max-width:100px;width:7%;"><img src="/images/img/btn_chair_notinsession.png" alt="Section doesn't meet"> </td>`);
+                    notHomeroomRow.find('td a[id^="mdLink"]').replaceWith(`<td style="max-width:100px;width:7%;"><img src="/images/img/btn_chair_notinsession.png" alt="Section doesn't meet"> </td>`);
+            }
+        });
+    });
+
+  </script>
+[/if#elementary]
+

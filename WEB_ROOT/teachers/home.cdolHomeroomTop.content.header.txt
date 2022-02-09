@@ -1,0 +1,11 @@
+~[if#p.~[displaypref:HomeRoomTop-U~[x:userid]]=1]
+<script>
+
+$j(document).ready(function() {
+  var homeroomRow = $j("tr td:contains('Homeroom')").closest('tr');
+  $j("#teacherSectionTable tbody tr:first").before(homeroomRow);
+});
+
+</script>
+
+[/if#p]
