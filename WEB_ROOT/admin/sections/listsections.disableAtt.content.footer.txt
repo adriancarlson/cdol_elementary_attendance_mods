@@ -1,4 +1,4 @@
-~[if#elementary.~(f.in;value=~(curschoolid);in=102,104,105,107,108,109,110,111,120,131,140,150,211,260,261,262,263,264,272,282,310,437)=1]
+~[if#elementary.~(f.in;value=~(curschoolid);in=102,104,105,107,108,109,110,111,120,131,140,164,184,150,211,260,261,262,263,264,272,282,310,437)=1]
 <script>
   $j(document).ready(function () {
     let courseNumb = $j('#tableContent').find('td[coursenumber]').attr("coursenumber");
