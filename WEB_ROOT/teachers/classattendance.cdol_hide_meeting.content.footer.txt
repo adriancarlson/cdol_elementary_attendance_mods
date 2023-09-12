@@ -1,10 +1,9 @@
 ~[if#elementary.~(f.in;value=~(curschoolid);in=102,104,105,107,108,109,110,111,120,131,140,150,164,184,211,260,261,262,263,264,272,282,310,437)=1]
 <script language="javascript">
 
-  jQuery(document).ready(function () {
-
-    jQuery('#attendance-table tr').each(function () {
-      let classRow = jQuery(this).find('td:has(input[name="studentTrack"])').hide();
+  $j(() => {
+    $j('#attendance-table tr').each(function () {
+      const classRow = $j(this).find('td:has(input[name="studentTrack"])').hide();
     });
   });
 </script>

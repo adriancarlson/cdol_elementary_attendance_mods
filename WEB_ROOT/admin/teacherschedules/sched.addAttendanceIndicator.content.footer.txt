@@ -1,41 +1,45 @@
 ~[if#elementary.~(f.in;value=~(curschoolid);in=102,104,105,107,108,109,110,111,120,131,140,150,164,184,211,260,261,262,263,264,272,282,310,437)=1]
 <div id="tNumb" style="display:none">~([05]id)</div>
 <script>
-  jQuery(document).ready(function () {
-    var myTimeOut;
-    var tableID = 'teacherSectionTable'; //element ID of table to sort
-    function waitAngularFinish() {
+  $j(() => {
+    let myTimeOut;
+    const tableID = 'teacherSectionTable'; //element ID of table to sort
+    const waitAngularFinish = () => {
       //wait until #loading dialog is in DOM and has been set to hidden
-      if (jQuery('#loading').length > 0 && jQuery('#loading:visible').length === 0) {
+      if ($j('#loading').length > 0 && $j('#loading:visible').length === 0) {
         clearTimeout(myTimeOut);
 
-        let tchrNumber = jQuery('#tNumb').html();
-        
-        jQuery('#' + tableID + ' tbody tr ').not(':last').each(function () {
-          let courseNumb = jQuery(this).find('td:eq(2)').text().trim();
-          let secNumb = jQuery(this).find('td:eq(4)').text().trim();
-          
+        const tchrNumber = $j('#tNumb').html();
+
+        $j(`#${tableID} tbody tr`).not(':last').each(function () {
+          const courseNumb = $j(this).find('td:eq(2)').text().trim();
+          const secNumb = $j(this).find('td:eq(4)').text().trim();
+
           if (courseNumb.includes("541")) {
-            attTd = jQuery(this).find('td[name^="el_attendance"]');
-            attTd.prepend(`<img id="noAtt" src="/images/attendancetaken_no.png" alt="No Attendance Taken">`);
-            
-            jQuery.getJSON('/admin/cdol/atttaken/data/getAttendanceTaken.json', { "crsNumb": courseNumb, "secNumb": secNumb, "teacher": tchrNumber }, function (data) {
-            var attTakenData = data;
-            attTakenData.pop();
-            attTakenData.forEach(function (curRecord) {
-              if (curRecord.attTaken == 1) {
-                attTd.find('#noAtt').remove();
-                attTd.prepend(`<img id="attTaken" src="/images/attendancetaken_yes.png" alt="Attendance Taken">`);
-              }
-            })
-          });
+            const studentCountValue = $j(this).find('td[studentcount]').attr('studentcount');
+            if (studentCountValue > 0) {
+              attTd = $j(this).find('td[name^="el_attendance"]');
+
+              attTd.prepend(`<img id="noAtt" src="/images/attendancetaken_no.png" alt="No Attendance Taken">`);
+            }
+
+            $j.getJSON('/admin/cdol/atttaken/data/getAttendanceTaken.json', { "crsNumb": courseNumb, "secNumb": secNumb, "teacher": tchrNumber }, (data) => {
+              const attTakenData = data;
+              attTakenData.pop();
+              attTakenData.forEach(curRecord => {
+                if (curRecord.attTaken == 1) {
+                  attTd.find('#noAtt').remove();
+                  attTd.prepend(`<img id="attTaken" src="/images/attendancetaken_yes.png" alt="Attendance Taken">`);
+                }
+              })
+            });
           }
         });
       } else {
-        myTimeOut = setTimeout(waitAngularFinish, 100);
+        myTimeOut = setTimeout(waitAngularFinish, 1000);
       }
     }
-    myTimeOut = setTimeout(waitAngularFinish, 100);
+    myTimeOut = setTimeout(waitAngularFinish, 1000);
   });
 </script>
 [/if#elementary]

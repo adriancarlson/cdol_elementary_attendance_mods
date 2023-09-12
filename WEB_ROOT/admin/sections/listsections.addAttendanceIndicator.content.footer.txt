@@ -1,26 +1,30 @@
 ~[if#elementary.~(f.in;value=~(curschoolid);in=102,104,105,107,108,109,110,111,120,131,140,150,164,184,211,260,261,262,263,264,272,282,310,437)=1]
 <script>
-  jQuery(document).ready(function () {
-    var myTimeOut;
-    var tableID = 'tableContent'; //element ID of table to sort
-    function waitAngularFinish() {
+  $j(() => {
+    let myTimeOut;
+    const tableID = 'tableContent'; //element ID of table to sort
+    const waitAngularFinish = () => {
       //wait until #loading dialog is in DOM and has been set to hidden
-      if (jQuery('#loading').length > 0 && jQuery('#loading:visible').length === 0) {
+      if ($j('#loading').length > 0 && $j('#loading:visible').length === 0) {
         clearTimeout(myTimeOut);
-        let courseNumb = jQuery('#tableContent').find('td[coursenumber]').attr("coursenumber");
+        let courseNumb = $j('#tableContent').find('td[coursenumber]').attr("coursenumber");
         if (courseNumb.includes("541")) {
-          jQuery('#tableContent tr').each(function () {
-            jQuery(this).find('td[name^="el_attendance"]').prepend(`<img id="noAtt" src="/images/attendancetaken_no.png" alt="No Attendance Taken">`);
+          $j('#tableContent tr').each(function () {
+            const studentCountValue = $j(this).find('td[studentcount]').attr('studentcount');
+            if (studentCountValue > 0) {
+              $j(this).find('td[name^="el_attendance"]').prepend(`<img id="noAtt" src="/images/attendancetaken_no.png" alt="No Attendance Taken">`);
+            }
           });
-          jQuery.getJSON('/admin/cdol/atttaken/data/getAttendanceTaken.json', { "crsNumb": courseNumb, "secNumb": "", "teacher": "" }, function (data) {
-            var attTakenData = data;
+          $j.getJSON('/admin/cdol/atttaken/data/getAttendanceTaken.json', { "crsNumb": courseNumb, "secNumb": "", "teacher": "" }, (data) => {
+            const attTakenData = data;
             attTakenData.pop();
-            attTakenData.forEach(function (curRecord) {
+            attTakenData.forEach(curRecord => {
               if (curRecord.attTaken == 1) {
                 let targetSec = curRecord.secNumb;
-                console.log(targetSec);
-                let targetRow = jQuery('#tableContent').find(`td[sectionnum="${targetSec}"]`).closest('tr');
+                let targetRow = $j('#tableContent').find(`td[sectionnum="${targetSec}"]`).closest('tr');
                 let attTd = targetRow.find('td[name^="el_attendance"]');
+                let studentCountCell = targetRow.find('td[sectionnum]').filter('[studentcount]');
+                let studentCount = studentCountCell.attr('studentcount');
                 attTd.find('#noAtt').remove();
                 attTd.prepend(`<img id="attTaken" src="/images/attendancetaken_yes.png" alt="Attendance Taken">`);
               }
@@ -28,10 +32,10 @@
           });
         }
       } else {
-        myTimeOut = setTimeout(waitAngularFinish, 100);
+        myTimeOut = setTimeout(waitAngularFinish, 1000);
       }
     }
-    myTimeOut = setTimeout(waitAngularFinish, 100);
+    myTimeOut = setTimeout(waitAngularFinish, 1000);
   });
 </script>
 [/if#elementary]
